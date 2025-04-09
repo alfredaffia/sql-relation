@@ -1,6 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { CreateProfileDto } from "src/profile/dto/create-profile.dto";
-
+import { CreateProfileDto } from "./create-profile.dto";
 
 export class CreateUserDto {
     @IsString()
