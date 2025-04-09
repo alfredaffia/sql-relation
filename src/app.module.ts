@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-// import { ProfileModule } from './profile/profile.module';
-// import { TweetModule } from './tweet/tweet.module';
 import { User} from './user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config'

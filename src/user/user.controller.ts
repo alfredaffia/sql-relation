@@ -18,12 +18,6 @@ export class UserController {
 return this.userService.addProfile(id,createProfileDto)
     }
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.createUser(createUserDto);
-  // }
-
-
   @Get()
   findAll() {
     return this.userService.findAll();

@@ -33,7 +33,6 @@ export class UserService {
       throw new HttpException('User already exists', 400);
     }
 
-    
     const payload = { email: 'user.email', id: 'user.id', username: 'user.username' };
 
     // create new user 
@@ -47,23 +46,6 @@ export class UserService {
       access_token: this.jwtService.sign(payload)
     };
   }
-
-  // async createUser(userDto:CreateUserDto){
-  //   // create profile
-  //     userDto.profile = userDto.profile ??{}
-  //   let profile = this.createProfileDto.create(userDto.profile);
-  //   await this.createProfileDto.save(profile);
-
-  //   // create new project 
-  //   let user =this.createUserDto.create(userDto)
-
-  //   // set user profile
-  //   user.profile =profile
-
-  //   // save the user object 
-  //  return await this.createUserDto.save(user);
-
-  // }
 
   async addProfile(id:string ,createProfileDto:CreateProfileDto){
     const user= await this.createUserDto.findOne({where:{id:id}});
