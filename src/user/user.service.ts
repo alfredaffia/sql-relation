@@ -6,8 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Profile } from './entities/profile.entity';
-// import { Profile } from 'src/profile/entities/profile.entity';
-import { CreateProfileDto } from 'src/profile/dto/create-profile.dto';
+import { CreateProfileDto } from './dto/create-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -17,13 +16,13 @@ export class UserService {
     private createProfileDto: Repository<Profile>,
     private jwtService: JwtService,
   ) { }
-  async addUser(createUserDto: CreateUserDto,createProfileDto:CreateProfileDto) {
+  async addUser(createUserDto: CreateUserDto,) {
 
     // create profile
-    createUserDto.profile = createUserDto.profile ?? {}
+    // createUserDto.profile = createUserDto.profile ?? {}
 
-    let profile = this.createProfileDto.create(createUserDto.profile);
-    await this.createProfileDto.save(profile);
+    // let profile = this.createProfileDto.create(createUserDto.profile);
+    // await this.createProfileDto.save(profile);
 
     // const addProfile = this.createProfileDto.create(createProfileDto);
     // check if email already exists 
@@ -40,7 +39,7 @@ export class UserService {
     // create new user 
     const add = this.createUserDto.create(createUserDto);
     // set user profile
-    add.profile = profile
+    // add.profile = profile
 
     return {
       user: await this.createUserDto.save(add),
@@ -65,6 +64,22 @@ export class UserService {
   //  return await this.createUserDto.save(user);
 
   // }
+
+  async addProfile(id:string ,createProfileDto:CreateProfileDto){
+    const user= await this.createUserDto.findOne({where:{id:id}});
+    if (!user){
+      throw new HttpException('User Does Not Exist', 404)
+    }
+    const createProfile=await this.createProfileDto.create(createProfileDto);
+    const saveProfile= await this.createProfileDto.save(createProfileDto);
+user.profile=saveProfile
+const saveUser= await this.createUserDto.save(user) 
+return {
+  message:'Profile saved sucessfully',
+  userProfile:saveProfile
+}
+
+  }
 
   async findAll() {
     return await this.createUserDto.find(

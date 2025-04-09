@@ -1,4 +1,4 @@
-import { Profile } from 'src/profile/entities/profile.entity';
+import { Profile } from './profile.entity';
 import { Entity, Column, OneToOne, JoinColumn, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
