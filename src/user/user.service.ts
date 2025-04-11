@@ -64,14 +64,14 @@ return {
   }
 
   async findAll() {
-    return await this.createUserDto.find(
+    const allUsers= await this.createUserDto.find(
       {relations:['profile']}
     );
   }
   async findEmail(email: string) {
     const userEmail = await this.createUserDto.findOneBy({ email });
     if (!userEmail) {
-      throw new ConflictException('Email already exists');
+      throw new NotFoundException('Email already exists');
     }
     return userEmail;
     }
@@ -79,7 +79,7 @@ return {
     async user (headers:any){
       const authorizationHeader = headers.authorization;
       if (authorizationHeader) {
-    const token = authorizationHeader.replace('Berrer ', '');
+    const token = authorizationHeader.replace('Bearer ', '');
     
     const secret = process.env.JWTSecret;
     
@@ -94,7 +94,7 @@ return {
       throw new HttpException('invalid token', 401);
       } 
     }else{
-      throw new HttpException('invalid or missing Berer token' ,401);
+      throw new HttpException('invalid or missing Bearer token' ,401);
     }
     }
 

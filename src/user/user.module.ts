@@ -12,7 +12,7 @@ import { Profile } from './entities/profile.entity';
   imports: [TypeOrmModule.forFeature([User, Profile]),
   JwtModule.register({
     global: true,
-    secret: process.env.JWTSecret,
+    secret: process.env.JWT_Secret,
     signOptions: { expiresIn: '1h' },
   }),
 
@@ -27,4 +27,6 @@ import { Profile } from './entities/profile.entity';
     PassportModule , JwtStrategy
   ]
 })
+
+
 export class UserModule {}

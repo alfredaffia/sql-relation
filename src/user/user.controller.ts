@@ -12,6 +12,7 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.addUser(createUserDto);
   }
+  
 
   @Post()
   profile(@Param(':id/profile')id:string, @Body() createProfileDto:CreateProfileDto){
