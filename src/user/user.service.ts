@@ -18,15 +18,6 @@ export class UserService {
   ) { }
   async addUser(createUserDto: CreateUserDto,) {
 
-    // create profile
-    // createUserDto.profile = createUserDto.profile ?? {}
-
-    // let profile = this.createProfileDto.create(createUserDto.profile);
-    // await this.createProfileDto.save(profile);
-
-    // const addProfile = this.createProfileDto.create(createProfileDto);
-    // check if email already exists 
-
     const { email } = createUserDto;
     const existingUser = await this.createUserDto.findOne({ where: { email } });
     if (existingUser) {
@@ -37,12 +28,10 @@ export class UserService {
 
     // create new user 
     const add = this.createUserDto.create(createUserDto);
-    // set user profile
-    // add.profile = profile
+   
 
     return {
       user: await this.createUserDto.save(add),
-      // profile:await this.createProfileDto.save(addProfile),
       access_token: this.jwtService.sign(payload)
     };
   }
