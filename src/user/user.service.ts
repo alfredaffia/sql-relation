@@ -1,4 +1,4 @@
-import { Injectable, HttpException, NotFoundException ,ConflictException} from '@nestjs/common';
+import { Injectable, HttpException, NotFoundException, ConflictException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,7 +28,7 @@ export class UserService {
 
     // create new user 
     const add = this.createUserDto.create(createUserDto);
-   
+
 
     return {
       user: await this.createUserDto.save(add),
@@ -36,25 +36,25 @@ export class UserService {
     };
   }
 
-  async addProfile(id:string ,createProfileDto:CreateProfileDto){
-    const user= await this.createUserDto.findOne({where:{id:id}});
-    if (!user){
+  async addProfile(id: string, createProfileDto: CreateProfileDto) {
+    const user = await this.createUserDto.findOne({ where: { id: id } });
+    if (!user) {
       throw new HttpException('User Does Not Exist', 404)
     }
-    const createProfile=await this.createProfileDto.create(createProfileDto);
-    const saveProfile= await this.createProfileDto.save(createProfileDto);
-user.profile=saveProfile
-const saveUser= await this.createUserDto.save(user) 
-return {
-  message:'Profile saved sucessfully',
-  userProfile:saveProfile
-}
+    const createProfile = await this.createProfileDto.create(createProfileDto);
+    const saveProfile = await this.createProfileDto.save(createProfile);
+    user.profile = saveProfile
+    const saveUser = await this.createUserDto.save(user)
+    return {
+      message: 'Profile saved sucessfully',
+      userProfile: saveProfile
+    }
 
   }
 
   async findAll() {
-    const allUsers= await this.createUserDto.find(
-      {relations:['profile']}
+    const allUsers = await this.createUserDto.find(
+      { relations: ['profile'] }
     );
   }
   async findEmail(email: string) {
@@ -63,29 +63,29 @@ return {
       throw new NotFoundException('Email already exists');
     }
     return userEmail;
-    }
+  }
 
-    async user (headers:any){
-      const authorizationHeader = headers.authorization;
-      if (authorizationHeader) {
-    const token = authorizationHeader.replace('Bearer ', '');
-    
-    const secret = process.env.JWTSecret;
-    
-    try{
-      const decoded =this.jwtService.verify(token);
-      let id = decoded["id"];
-      let user =await this.createUserDto.findOneBy({id});
-    
-      return { id: id, name: user?.userName, email: user?.email } ;
+  async user(headers: any) {
+    const authorizationHeader = headers.authorization;
+    if (authorizationHeader) {
+      const token = authorizationHeader.replace('Bearer ', '');
+
+      const secret = process.env.JWTSecret;
+
+      try {
+        const decoded = this.jwtService.verify(token);
+        let id = decoded["id"];
+        let user = await this.createUserDto.findOneBy({ id });
+
+        return { id: id, name: user?.userName, email: user?.email };
+      }
+      catch (error) {
+        throw new HttpException('invalid token', 401);
+      }
+    } else {
+      throw new HttpException('invalid or missing Bearer token', 401);
     }
-    catch (error) {
-      throw new HttpException('invalid token', 401);
-      } 
-    }else{
-      throw new HttpException('invalid or missing Bearer token' ,401);
-    }
-    }
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
